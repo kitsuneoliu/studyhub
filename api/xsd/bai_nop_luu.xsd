@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  bai_nop_luu.xsd: cấu trúc file XML LƯU TRÊN SERVER cho mỗi bài tập sinh viên đã nộp
+  (storage/bai_nop/<ma_bai_tap>/bai_nop_<id>.xml). Chỉ lưu thông tin bài nộp, không chứa nội dung tệp
+  (tệp nằm trong bảng bai_nop của MySQL).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+  <xs:element name="BaiNopDaLuu">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SinhVien">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TenDangNhap" type="xs:string"/>
+              <xs:element name="HoTen" type="xs:string"/>
+              <xs:element name="MaSoSV" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MonHoc">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BaiTap">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GhiChu" type="xs:string"/>
+        <xs:element name="ThoiGianNop" type="xs:string"/>
+        <xs:element name="ThoiGianNhan" type="xs:string"/>
+        <xs:element name="Tep">
+          <xs:complexType>
+            <xs:attribute name="ten" type="xs:string" use="required"/>
+            <xs:attribute name="loai" type="xs:string" use="required"/>
+            <xs:attribute name="kichThuoc" type="xs:nonNegativeInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="clientId" type="xs:string" use="required"/>
+      <xs:attribute name="cheDo" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

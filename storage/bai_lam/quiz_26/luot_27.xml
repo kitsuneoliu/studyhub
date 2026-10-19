@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BaiLam luotLamBaiId="27">
+  <SinhVien>
+    <TenDangNhap>sv3</TenDangNhap>
+    <HoTen>Lê Hoàng Nam</HoTen>
+    <MaSoSV>2200003</MaSoSV>
+  </SinhVien>
+  <BaiKiemTra id="26">
+    <TieuDe>Kiểm tra 15p</TieuDe>
+    <TongDiem>10.00</TongDiem>
+  </BaiKiemTra>
+  <ThoiGianBatDau>2026-10-16T13:31:51</ThoiGianBatDau>
+  <ThoiGianNop>2026-10-16T13:31:57</ThoiGianNop>
+  <ThoiGianLamBaiGiay>6</ThoiGianLamBaiGiay>
+  <DiemSo>0.00</DiemSo>
+  <SoViPham>1</SoViPham>
+  <TongSoCauTracNghiem>10</TongSoCauTracNghiem>
+  <SoCauDung>0</SoCauDung>
+  <SoCauSai>10</SoCauSai>
+  <DanhSachCauTraLoi>
+    <CauTraLoi cauHoiId="59" traLoi="" dapAnDung="A" dung="false"/>
+    <CauTraLoi cauHoiId="60" traLoi="" dapAnDung="B" dung="false"/>
+    <CauTraLoi cauHoiId="61" traLoi="" dapAnDung="D" dung="false"/>
+    <CauTraLoi cauHoiId="62" traLoi="" dapAnDung="B" dung="false"/>
+    <CauTraLoi cauHoiId="63" traLoi="" dapAnDung="A" dung="false"/>
+    <CauTraLoi cauHoiId="64" traLoi="" dapAnDung="A" dung="false"/>
+    <CauTraLoi cauHoiId="65" traLoi="" dapAnDung="C" dung="false"/>
+    <CauTraLoi cauHoiId="66" traLoi="" dapAnDung="A" dung="false"/>
+    <CauTraLoi cauHoiId="67" traLoi="" dapAnDung="B" dung="false"/>
+    <CauTraLoi cauHoiId="68" traLoi="" dapAnDung="C" dung="false"/>
+  </DanhSachCauTraLoi>
+</BaiLam>

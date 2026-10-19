@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- chi_tiet.xsd: kiểm tra XML chi tiết 1 lượt làm bài của quizzes.php?action=chi_tiet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:element name="ChiTietBaiLam">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TieuDeBaiKiemTra" type="xs:string"/>
+        <xs:element name="HocSinh" type="xs:string"/>
+        <xs:element name="HoTen" type="xs:string"/>
+        <xs:element name="MaSoSV" type="xs:string"/>
+        <xs:element name="TrangThai" type="xs:string"/>
+        <xs:element name="DiemSo" type="xs:string"/>
+        <xs:element name="DanhSachCauHoi">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CauHoi" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="NoiDung" type="xs:string"/>
+                    <xs:element name="DapAnSinhVien" type="xs:string"/>
+                    <!-- Chỉ câu trắc nghiệm mới có nhóm phần tử bên dưới -->
+                    <xs:sequence minOccurs="0">
+                      <xs:element name="DapAnA" type="xs:string"/>
+                      <xs:element name="DapAnB" type="xs:string"/>
+                      <xs:element name="DapAnC" type="xs:string"/>
+                      <xs:element name="DapAnD" type="xs:string"/>
+                      <xs:element name="DapAnDung" type="xs:string"/>
+                      <xs:element name="Dung">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:enumeration value="0"/>
+                            <xs:enumeration value="1"/>
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+                  <xs:attribute name="loai" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

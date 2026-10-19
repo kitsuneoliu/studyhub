@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ket_qua.xsd: kiểm tra XML danh sách kết quả của quizzes.php?action=results -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:element name="KetQuaBaiKiemTra">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TieuDe" type="xs:string"/>
+        <xs:element name="TongDiem" type="xs:decimal"/>
+        <xs:element name="DanhSachLuotLamBai">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LuotLamBai" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="HocSinh" type="xs:string"/>
+                    <xs:element name="HoTen" type="xs:string"/>
+                    <xs:element name="MaSoSV" type="xs:string"/>
+                    <xs:element name="TrangThai">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="dang_lam"/>
+                          <xs:enumeration value="da_nop"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="DiemSo" type="xs:string"/>
+                    <xs:element name="ChamTay">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="0"/>
+                          <xs:enumeration value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ThoiGianNop" type="xs:string"/>
+                    <xs:element name="BiCam">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="0"/>
+                          <xs:enumeration value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

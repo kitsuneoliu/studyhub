@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Danh sách tài khoản mẫu: ql1, ql2, sv1, sv2 dùng chung mật khẩu 123123 (khớp với dữ liệu mẫu trong schema.sql). -->
+<DanhSachTaiKhoan>
+    <TaiKhoan vaiTro="gv">
+        <TenDangNhap>ql1</TenDangNhap>
+        <MatKhau>123123</MatKhau>
+    </TaiKhoan>
+    <TaiKhoan vaiTro="gv">
+        <TenDangNhap>ql2</TenDangNhap>
+        <MatKhau>123123</MatKhau>
+    </TaiKhoan>
+    <TaiKhoan vaiTro="sv">
+        <TenDangNhap>sv1</TenDangNhap>
+        <MatKhau>123123</MatKhau>
+        <HoTen>Nguyễn Văn An</HoTen>
+        <MaSoSV>2200001</MaSoSV>
+    </TaiKhoan>
+    <TaiKhoan vaiTro="sv">
+        <TenDangNhap>sv2</TenDangNhap>
+        <MatKhau>123123</MatKhau>
+        <HoTen>Trần Thị Bình</HoTen>
+        <MaSoSV>2200002</MaSoSV>
+    </TaiKhoan>
+</DanhSachTaiKhoan>

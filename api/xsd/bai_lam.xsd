@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  bai_lam.xsd: cấu trúc hợp lệ của 1 file XML bài làm đã nộp.
+  Server tự ghi file này vào storage/bai_lam/quiz_<id>/luot_<id>.xml mỗi khi
+  sinh viên nộp bài (xem xml_helper.php). XML sai cấu trúc sẽ KHÔNG được ghi.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:element name="BaiLam">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SinhVien">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TenDangNhap" type="xs:string"/>
+              <xs:element name="HoTen" type="xs:string"/>
+              <xs:element name="MaSoSV" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="BaiKiemTra">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TieuDe" type="xs:string"/>
+              <!-- Tổng điểm của cả bài (điểm tối đa) -->
+              <xs:element name="TongDiem" type="xs:decimal"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ThoiGianBatDau" type="xs:dateTime"/>
+        <xs:element name="ThoiGianNop" type="xs:dateTime"/>
+        <xs:element name="ThoiGianLamBaiGiay" type="xs:nonNegativeInteger"/>
+        <xs:element name="DiemSo" type="xs:decimal"/>
+        <xs:element name="SoViPham" type="xs:nonNegativeInteger"/>
+        <xs:element name="TongSoCauTracNghiem" type="xs:nonNegativeInteger"/>
+        <xs:element name="SoCauDung" type="xs:nonNegativeInteger"/>
+        <xs:element name="SoCauSai" type="xs:nonNegativeInteger"/>
+
+        <xs:element name="DanhSachCauTraLoi">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CauTraLoi" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="cauHoiId" type="xs:positiveInteger" use="required"/>
+                  <xs:attribute name="traLoi" type="xs:string" use="required"/>
+                  <xs:attribute name="dapAnDung" type="xs:string" use="required"/>
+                  <xs:attribute name="dung" type="xs:boolean" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="luotLamBaiId" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

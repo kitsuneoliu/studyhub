@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bài Tập Về Nhà</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: '#faf6ec',
+                            100: '#f3e7c9',
+                            200: '#e8d29e',
+                            300: '#dcbd72',
+                            400: '#d4af6a',
+                            500: '#c9a04f',
+                            600: '#b8903f',
+                            700: '#96793f',
+                            800: '#725c33',
+                            900: '#4a3c22'
+                        },
+                        slate: {
+                            50: '#f4f4f9',
+                            100: '#e3e4f0',
+                            200: '#c7c9df',
+                            300: '#9c9ec8',
+                            400: '#71739f',
+                            500: '#4f5180',
+                            600: '#393b64',
+                            700: '#262850',
+                            800: '#181a3a',
+                            900: '#0d0e22'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css?v=20261013-12">
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+
+    <div id="page-loader" class="page-loader-overlay">
+        <div class="tetris-loader-root">
+            <div class="tetris-loader">
+                <span class="tetris-block">L</span>
+                <span class="tetris-block">O</span>
+                <span class="tetris-block">A</span>
+                <span class="tetris-block">D</span>
+                <span class="tetris-block">I</span>
+                <span class="tetris-block">N</span>
+                <span class="tetris-block">G</span>
+            </div>
+            <div class="tetris-loader-text">Loading</div>
+        </div>
+    </div>
+
+    <nav class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 dark:shadow-[0_1px_12px_rgba(212,175,106,0.15)] sticky top-0 z-10 transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 text-white p-2 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">StudyHub</span>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="switchTab('homeworks')" id="nav-homeworks" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 dark:text-indigo-400 transition-colors">
+                        <i class="fa-solid fa-list-check mr-1 hidden sm:inline"></i> Bài tập
+                    </button>
+                    <button onclick="switchTab('subjects')" id="nav-subjects" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i class="fa-solid fa-layer-group mr-1 hidden sm:inline"></i> Môn học
+                    </button>
+                    <button onclick="switchTab('curriculum')" id="nav-curriculum" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i class="fa-solid fa-graduation-cap mr-1 hidden sm:inline"></i> Giáo trình
+                    </button>
+                    <button onclick="switchTab('quizzes')" id="nav-quizzes" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i class="fa-solid fa-file-pen mr-1 hidden sm:inline"></i> Kiểm tra
+                    </button>
+                    <button type="button" onclick="openAccountsModal()" id="nav-accounts" class="hidden px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-solid fa-users mr-1 hidden sm:inline"></i> Tài khoản SV</button>
+                    <button type="button" onclick="openCheatLogModal()" id="nav-cheat-log" class="hidden nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors">Giám sát gian lận</button>
+                    
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-600 mx-2"></div>
+                    
+                    <span id="role-badge" class="hidden px-3 py-1.5 rounded-md text-xs font-semibold text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 dark:text-indigo-400 whitespace-nowrap"></span>
+                    <button id="btn-login" onclick="openModal('modal-login')" class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-user mr-1"></i> Đăng nhập
+                    </button>
+                    <button id="btn-logout" onclick="handleLogout()" class="hidden px-3 py-2 rounded-md text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="fixed bottom-12 left-8 z-40 origin-bottom-left transform scale-50 md:scale-75">
+         
+        <label class="container">
+            <div class="simple-text">Mở Đèn</div>
+            <input type="checkbox" id="theme-toggle-input" checked="checked" />
+            <div class="checkmark"></div>
+            <div class="torch">
+                <div class="light-effect"></div>
+                <div class="glow-effect"></div>
+                <div class="particles">
+                    <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                </div>
+                <div class="smoke">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+                <div class="head">
+                    <div class="face top"><div></div><div></div><div></div><div></div></div>
+                    <div class="face left"><div></div><div></div><div></div><div></div></div>
+                    <div class="face right"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="stick">
+                    <div class="side side-left">
+                        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                    <div class="side side-right">
+                        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            </div>
+        </label>
+    </div>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <div id="tab-homeworks" class="tab-content active">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Tất cả Bài tập</h1>
+                    
+                    <span class="bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 text-sm font-bold px-3 py-1 rounded-full shadow-sm">
+                        Tổng: <span id="stat-total-hw">0</span>
+                    </span>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <select id="filter-subject" onchange="renderHomeworks(); onSubmissionSubjectChange()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-grow sm:flex-grow-0 transition-colors">
+                        <option value="all">Tất cả môn</option>
+                        
+                    </select>
+                    
+                    <button id="btn-add-hw" onclick="openModal('modal-homework')" class="hidden hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Thêm bài tập
+                    </button>
+                </div>
+            </div>
+
+            <!-- Giảng viên: chọn môn mình dạy để cho phép / đóng việc sinh viên nộp bài tập -->
+            <div id="hw-submit-panel" class="hidden mb-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 px-5 py-4 transition-colors"></div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 text-sm border-b border-slate-100 dark:border-slate-700">
+                                <th class="px-6 py-4 font-medium">Bài tập</th>
+                                <th class="px-6 py-4 font-medium">Môn học</th>
+                                <th id="th-actions" class="px-6 py-4 font-medium text-right auth-col hidden">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="homework-list" class="divide-y divide-slate-100 dark:divide-slate-700">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div id="empty-homework-state" class="hidden flex-col items-center justify-center py-12 text-slate-500 dark:text-slate-400">
+                    <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3">
+                        <i class="fa-solid fa-folder-open text-3xl text-slate-300 dark:text-slate-600"></i>
+                    </div>
+                    <p>Chưa có bài tập nào.</p>
+                </div>
+            </div>
+
+            <!-- ====== NỘP BÀI (đã gộp vào tab Bài tập) ====== -->
+            <div id="submissions-banner" class="hidden mt-6"></div>
+
+            <!-- Sinh viên: bài đã soạn khi offline, đang chờ gửi -->
+            <section id="sv-pending-wrap" class="hidden mt-6">
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-3"><i class="fa-regular fa-clock mr-1"></i> Đang chờ đồng bộ (lưu trên thiết bị)</h2>
+                <div id="sv-pending" class="space-y-3"></div>
+            </section>
+
+            <!-- Giảng viên: bài sinh viên đã nộp -->
+            <section id="submissions-gv" class="hidden mt-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-3">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Bài sinh viên đã nộp <span class="text-sm font-normal text-slate-500 dark:text-slate-400">(tổng: <b id="gv-count" class="text-slate-800 dark:text-slate-200">0</b>)</span></h2>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <select id="filter-submission-homework" onchange="loadSubmissionsView()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-[16rem]">
+                            <option value="all">Tất cả bài tập</option>
+                        </select>
+                        <button type="button" onclick="loadSubmissionsView()" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-rotate"></i> Làm mới
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 text-sm border-b border-slate-100 dark:border-slate-700">
+                                    <th class="px-4 py-3 font-medium">Sinh viên</th>
+                                    <th class="px-4 py-3 font-medium">Bài tập / Môn</th>
+                                    <th class="px-4 py-3 font-medium">Tệp &amp; ghi chú</th>
+                                    <th class="px-4 py-3 font-medium">Thời gian nộp</th>
+                                    <th class="px-4 py-3 font-medium text-right">Xem / Tải</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gv-submissions" class="divide-y divide-slate-100 dark:divide-slate-700"></tbody>
+                        </table>
+                    </div>
+                    <div id="gv-empty" class="hidden text-center py-12 text-slate-500 dark:text-slate-400">
+                        <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3 inline-flex">
+                            <i class="fa-solid fa-inbox text-3xl text-slate-300 dark:text-slate-600"></i>
+                        </div>
+                        <p>Chưa có sinh viên nào nộp bài trong mục này.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="tab-subjects" class="tab-content">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Danh sách Môn học</h1>
+                <div class="flex items-center gap-2">
+                    <button id="btn-add-subject" onclick="openModal('modal-subject')" class="hidden hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-plus"></i> Thêm môn học
+                    </button>
+                </div>
+            </div>
+            
+            <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                
+            </div>
+        </div>
+
+        <div id="tab-curriculum" class="tab-content">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Giáo trình &amp; Tài liệu môn học</h1>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <select id="filter-curriculum-subject" onchange="renderCurriculum()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-grow sm:flex-grow-0 transition-colors">
+                        <option value="all">Tất cả môn</option>
+                    </select>
+                    <button id="btn-add-curriculum" onclick="openModal('modal-curriculum')" class="hidden hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Thêm giáo trình
+                    </button>
+                </div>
+            </div>
+
+            <div id="curriculum-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            </div>
+
+            <div id="curriculum-no-subject-state" class="hidden flex-col items-center justify-center py-12 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700">
+                <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3">
+                    <i class="fa-solid fa-layer-group text-3xl text-slate-300 dark:text-slate-600"></i>
+                </div>
+                <p>Chưa có môn học nào. Vui lòng tạo môn học trước.</p>
+            </div>
+
+            <div id="curriculum-empty-state" class="hidden flex-col items-center justify-center py-12 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700">
+                <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3">
+                    <i class="fa-solid fa-book text-3xl text-slate-300 dark:text-slate-600"></i>
+                </div>
+                <p>Chưa có giáo trình/tài liệu nào cho môn học này.</p>
+            </div>
+        </div>
+
+        <div id="tab-quizzes" class="tab-content">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Kiểm tra / Thi cử</h1>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <select id="filter-quiz-subject" onchange="loadQuizzesForSelectedSubject()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-grow sm:flex-grow-0 transition-colors">
+                        
+                    </select>
+                    <button id="btn-add-quiz" onclick="openCreateQuizModal()" class="hidden hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Tạo bài kiểm tra
+                    </button>
+                </div>
+            </div>
+
+            <div id="quiz-no-subject-state" class="hidden text-center py-12 text-slate-500 dark:text-slate-400">
+                <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3 inline-flex">
+                    <i class="fa-solid fa-layer-group text-3xl text-slate-300 dark:text-slate-600"></i>
+                </div>
+                <p>Chưa có môn học nào. Hãy thêm môn học trước.</p>
+            </div>
+
+            <div id="quiz-empty-state" class="hidden text-center py-12 text-slate-500 dark:text-slate-400">
+                <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-full mb-3 inline-flex">
+                    <i class="fa-solid fa-file-circle-question text-3xl text-slate-300 dark:text-slate-600"></i>
+                </div>
+                <p>Môn học này chưa có bài kiểm tra nào.</p>
+            </div>
+
+            <div id="quiz-list-container" class="grid grid-cols-1 gap-6"></div>
+        </div>
+    </main>
+
+    <div id="modal-login" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="relative">
+            <button type="button" onclick="closeModal('modal-login')" class="absolute -top-2 -right-2 z-30 bg-white text-slate-700 hover:text-slate-900 w-7 h-7 rounded-full shadow-md flex items-center justify-center transition-colors" title="Đóng">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- From Uiverse.io by shadyeljokers -->
+            <div class="container">
+                <div class="login-box">
+                    <h2>Login</h2>
+                    <form action="#">
+
+                        <div class="input-box">
+                            <!-- Đổi type email thành text, label từ Email thành User -->
+                            <input required="" type="text" id="user-input" />
+                            <label>User</label>
+                        </div>
+
+                        <div class="input-box">
+                            <input required="" type="password" id="pass-input" />
+                            <label>Password</label>
+                            <!-- Thêm Icon con mắt ẩn/hiện mật khẩu -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toggle-password" onclick="togglePassword(this)">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+
+                        <!-- Đã xóa quên mật khẩu và đăng ký -->
+                        <button class="btn" type="submit">Login</button>
+                    </form>
+                </div>
+
+                <span style="--i:0;"></span>
+                <span style="--i:1;"></span>
+                <span style="--i:2;"></span>
+                <span style="--i:3;"></span>
+                <span style="--i:4;"></span>
+                <span style="--i:5;"></span>
+                <span style="--i:6;"></span>
+                <span style="--i:7;"></span>
+                <span style="--i:8;"></span>
+                <span style="--i:9;"></span>
+                <span style="--i:10;"></span>
+                <span style="--i:11;"></span>
+                <span style="--i:12;"></span>
+                <span style="--i:13;"></span>
+                <span style="--i:14;"></span>
+                <span style="--i:15;"></span>
+                <span style="--i:16;"></span>
+                <span style="--i:17;"></span>
+                <span style="--i:18;"></span>
+                <span style="--i:19;"></span>
+                <span style="--i:20;"></span>
+                <span style="--i:21;"></span>
+                <span style="--i:22;"></span>
+                <span style="--i:23;"></span>
+                <span style="--i:24;"></span>
+                <span style="--i:25;"></span>
+                <span style="--i:26;"></span>
+                <span style="--i:27;"></span>
+                <span style="--i:28;"></span>
+                <span style="--i:29;"></span>
+                <span style="--i:30;"></span>
+                <span style="--i:31;"></span>
+                <span style="--i:32;"></span>
+                <span style="--i:33;"></span>
+                <span style="--i:34;"></span>
+                <span style="--i:35;"></span>
+                <span style="--i:36;"></span>
+                <span style="--i:37;"></span>
+                <span style="--i:38;"></span>
+                <span style="--i:39;"></span>
+                <span style="--i:40;"></span>
+                <span style="--i:41;"></span>
+                <span style="--i:42;"></span>
+                <span style="--i:43;"></span>
+                <span style="--i:44;"></span>
+                <span style="--i:45;"></span>
+                <span style="--i:46;"></span>
+                <span style="--i:47;"></span>
+                <span style="--i:48;"></span>
+                <span style="--i:49;"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(element) {
+            const input = document.getElementById('pass-input');
+            if (input.type === 'password') {
+                // Đổi thành chữ và icon mắt gạch chéo
+                input.type = 'text';
+                element.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                // Đổi lại thành password và icon mắt bình thường
+                input.type = 'password';
+                element.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+    </script>
+
+    <div id="modal-subject" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-sub-title">Thêm Môn Học Mới</h3>
+                    <button type="button" onclick="closeModal('modal-subject')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form id="form-subject" onsubmit="handleSaveSubject(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên môn học <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-subject-name" required placeholder="Ví dụ: Toán Cao Cấp" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Chọn màu sắc</label>
+                        <div class="flex gap-2" id="color-picker">
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-blue-500" class="peer sr-only" checked onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-blue-500 ring-2 ring-transparent peer-checked:ring-blue-700 dark:peer-checked:ring-blue-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-red-500" class="peer sr-only" onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-red-500 ring-2 ring-transparent peer-checked:ring-red-700 dark:peer-checked:ring-red-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-green-500" class="peer sr-only" onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-green-500 ring-2 ring-transparent peer-checked:ring-green-700 dark:peer-checked:ring-green-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-purple-500" class="peer sr-only" onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-purple-500 ring-2 ring-transparent peer-checked:ring-purple-700 dark:peer-checked:ring-purple-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-amber-500" class="peer sr-only" onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-amber-500 ring-2 ring-transparent peer-checked:ring-amber-700 dark:peer-checked:ring-amber-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                            <label class="cursor-pointer"><input type="radio" name="subject_color" value="bg-pink-500" class="peer sr-only" onchange="handlePresetColorChange(this.value)"><div class="w-8 h-8 rounded-full bg-pink-500 ring-2 ring-transparent peer-checked:ring-pink-700 dark:peer-checked:ring-pink-300 peer-checked:ring-offset-2 dark:ring-offset-slate-800 transition-all"></div></label>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+                            <label class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">Hoặc chọn màu khác:</label>
+                            <input type="color" id="input-custom-color" value="#6366f1" oninput="handleCustomColorChange(this.value)" class="w-9 h-9 rounded-lg cursor-pointer" title="Chọn mã màu tùy ý">
+                            <span id="custom-color-preview" class="hidden w-8 h-8 rounded-full ring-2 ring-offset-2 dark:ring-offset-slate-800 ring-indigo-500"></span>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-subject')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu môn học</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: GV quản lý tài khoản sinh viên -->
+    <div id="modal-accounts" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-slate-100 dark:border-slate-700">
+            <div class="flex justify-between items-center p-6 pb-4 flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tài khoản sinh viên</h3>
+                <div class="flex flex-wrap items-center justify-end gap-3">
+                    <button type="button" id="btn-open-teachers" onclick="openTeachersModal()" class="hidden hsr-btn bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-chalkboard-user"></i> Quản lý giảng viên
+                    </button>
+                    <button type="button" onclick="openClassesModal()" class="hsr-btn bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-people-group"></i> Quản lý lớp
+                    </button>
+                    <span class="flex items-center gap-2">
+                        <button type="button" onclick="document.getElementById('input-students-excel').click()" class="hsr-btn bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap" title="Cột A: mã số SV; B: tên; C: lớp; D: user; E: mật khẩu">
+                            <i class="fa-solid fa-file-excel"></i> Nạp từ Excel
+                        </button>
+                        <a href="baitap/sinhvien.xlsx" download class="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 underline whitespace-nowrap">Tải file mẫu</a>
+                        <input type="file" id="input-students-excel" accept=".xlsx" class="hidden" onchange="handleImportStudentsExcel(this)">
+                    </span>
+                    <button type="button" onclick="openAccountForm(null)" class="hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-user-plus"></i> Thêm sinh viên
+                    </button>
+                    <button type="button" onclick="closeModal('modal-accounts')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-sm font-medium">Đóng</button>
+                </div>
+            </div>
+            <div class="px-6 pb-6 overflow-auto flex-1 min-h-0">
+                <div id="accounts-import-report" class="hidden mb-4"></div>
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                            <th class="py-2 pr-3 font-medium">Mã số SV</th>
+                            <th class="py-2 pr-3 font-medium">Tên sinh viên</th>
+                            <th class="py-2 pr-3 font-medium">Lớp</th>
+                            <th class="py-2 pr-3 font-medium">Tên đăng nhập</th>
+                            <th class="py-2 font-medium text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accounts-body" class="text-slate-700 dark:text-slate-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: quản lý lớp học (tạo / đổi tên / xóa lớp, gắn sinh viên vào lớp) -->
+    <div id="modal-classes" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[55] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col border border-slate-100 dark:border-slate-700">
+            <div class="flex justify-between items-center p-6 pb-4 flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Quản lý lớp học</h3>
+                <button type="button" onclick="closeModal('modal-classes')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-sm font-medium">Đóng</button>
+            </div>
+            <div class="px-6 pb-6 overflow-auto flex-1 min-h-0 space-y-5">
+                <form onsubmit="handleCreateClass(event)" class="flex gap-3">
+                    <input type="text" id="input-class-name" maxlength="100" placeholder="Tên lớp mới, ví dụ: 22CNTT6" autocomplete="off" class="flex-1 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="submit" class="hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap"><i class="fa-solid fa-plus mr-1"></i>Tạo lớp</button>
+                </form>
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                            <th class="py-2 pr-3 font-medium">Tên lớp</th>
+                            <th class="py-2 pr-3 font-medium">Số sinh viên</th>
+                            <th class="py-2 font-medium text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classes-body" class="text-slate-700 dark:text-slate-200"></tbody>
+                </table>
+                <div id="class-assign-panel" class="hidden rounded-xl border border-slate-200 dark:border-slate-600 p-4">
+                    <div class="flex items-center justify-between mb-3 gap-3">
+                        <p class="font-semibold text-slate-800 dark:text-slate-100">Gắn sinh viên vào lớp <span id="class-assign-name" class="text-indigo-600 dark:text-indigo-300"></span></p>
+                        <input type="text" id="class-assign-search" oninput="renderClassAssignList()" placeholder="Tìm sinh viên..." class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Tick sinh viên thuộc lớp này. Sinh viên đang ở lớp khác sẽ được chuyển sang lớp này (mỗi sinh viên chỉ thuộc 1 lớp).</p>
+                    <div id="class-assign-list" class="max-h-64 overflow-auto space-y-1"></div>
+                    <div class="flex justify-end gap-3 mt-3">
+                        <button type="button" onclick="closeClassAssign()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600">Hủy</button>
+                        <button type="button" onclick="saveClassAssign()" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: GV thêm / sửa 1 tài khoản sinh viên -->
+    <div id="modal-account-form" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[55] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-account-title">Thêm tài khoản sinh viên</h3>
+                    <button type="button" onclick="closeModal('modal-account-form')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form id="form-account" onsubmit="handleSaveAccount(event)" autocomplete="off">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên đăng nhập <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-account-username" required maxlength="50" autocomplete="off" placeholder="Ví dụ: sv3" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow disabled:opacity-60">
+                        <p class="text-xs text-slate-400 mt-1">Dùng để đăng nhập (chữ không dấu, số, . _ - @). Không đổi được sau khi tạo.</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên sinh viên <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-account-hoten" required maxlength="100" autocomplete="off" placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <p class="text-xs text-slate-400 mt-1">Hiển thị thay cho tên đăng nhập.</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mã số sinh viên <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-account-mssv" required maxlength="30" autocomplete="off" placeholder="Ví dụ: 2200003" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Lớp học</label>
+                        <select id="input-account-lop" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                            <option value="">(Chưa xếp lớp)</option>
+                        </select>
+                        <p class="text-xs text-slate-400 mt-1">Mỗi sinh viên chỉ thuộc 1 lớp.</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mật khẩu <span id="account-pass-required" class="text-red-500">*</span></label>
+                        <input type="text" id="input-account-password" autocomplete="new-password" placeholder="Nhập mật khẩu" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <p id="account-pass-hint" class="hidden text-xs text-slate-400 mt-1">Để trống nếu không muốn đổi mật khẩu.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" id="btn-account-delete" onclick="deleteAccount()" class="hidden mr-auto px-4 py-2 rounded-xl text-sm font-medium text-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"><i class="fa-solid fa-trash mr-1"></i>Xóa tài khoản</button>
+                        <span class="flex-1"></span>
+                        <button type="button" onclick="closeModal('modal-account-form')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                        <button type="submit" id="btn-account-submit" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu tài khoản</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: giảng viên quản trị xem danh sách giảng viên + môn phụ trách -->
+    <div id="modal-teachers" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-slate-100 dark:border-slate-700">
+            <div class="flex justify-between items-center p-6 pb-4 flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tài khoản giảng viên</h3>
+                <div class="flex items-center gap-4">
+                    <button type="button" onclick="openTeacherForm(null)" class="hsr-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                        <i class="fa-solid fa-user-plus"></i> Thêm giảng viên
+                    </button>
+                    <button type="button" onclick="closeModal('modal-teachers')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-sm font-medium">Đóng</button>
+                </div>
+            </div>
+            <div class="px-6 pb-6 overflow-auto flex-1 min-h-0">
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                            <th class="py-2 pr-3 font-medium">Tên đăng nhập</th>
+                            <th class="py-2 pr-3 font-medium">Tên giảng viên</th>
+                            <th class="py-2 pr-3 font-medium">Môn phụ trách</th>
+                            <th class="py-2 font-medium text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teachers-body" class="text-slate-700 dark:text-slate-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: thêm / sửa 1 giảng viên và chọn các môn họ phụ trách -->
+    <div id="modal-teacher-form" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[55] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-auto border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-teacher-title">Thêm giảng viên</h3>
+                    <button type="button" onclick="closeModal('modal-teacher-form')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form id="form-teacher" onsubmit="handleSaveTeacher(event)" autocomplete="off">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên đăng nhập <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-teacher-username" required maxlength="50" autocomplete="off" placeholder="Ví dụ: mau" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow disabled:opacity-60">
+                        <p class="text-xs text-slate-400 mt-1">Chữ không dấu, số, . _ - @. Không đổi được sau khi tạo.</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên giảng viên <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-teacher-hoten" required maxlength="100" autocomplete="off" placeholder="Ví dụ: Thầy Mẫu" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mật khẩu <span id="teacher-pass-required" class="text-red-500">*</span></label>
+                        <input type="text" id="input-teacher-password" autocomplete="new-password" placeholder="Nhập mật khẩu" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <p id="teacher-pass-hint" class="hidden text-xs text-slate-400 mt-1">Để trống nếu không muốn đổi mật khẩu.</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Môn học phụ trách <span class="text-red-500">*</span></label>
+                        <p class="text-xs text-slate-400 mb-2">Chọn 1 hoặc nhiều môn. Giảng viên chỉ thấy và thao tác trên các môn này.</p>
+                        <div id="teacher-subject-checks" class="max-h-56 overflow-auto rounded-xl border border-slate-200 dark:border-slate-600 p-2 space-y-1"></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" id="btn-teacher-delete" onclick="deleteTeacher()" class="hidden mr-auto px-4 py-2 rounded-xl text-sm font-medium text-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"><i class="fa-solid fa-trash mr-1"></i>Xóa</button>
+                        <span class="flex-1"></span>
+                        <button type="button" onclick="closeModal('modal-teacher-form')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu giảng viên</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-cheat-log" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-slate-100 dark:border-slate-700">
+            <div class="flex justify-between items-center p-6 pb-4 flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Giám sát gian lận</h3>
+                <button type="button" onclick="closeModal('modal-cheat-log')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-sm font-medium">Đóng</button>
+            </div>
+            <div class="px-6 pb-6 overflow-auto flex-1 min-h-0">
+                <div id="cheat-log-message" class="hidden mb-3 text-sm text-red-500"></div>
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                            <th class="py-2 pr-3 font-medium">Sinh viên</th>
+                            <th class="py-2 pr-3 font-medium">Bài kiểm tra</th>
+                            <th class="py-2 pr-3 font-medium">Loại vi phạm</th>
+                            <th class="py-2 pr-3 font-medium">Bắt đầu</th>
+                            <th class="py-2 pr-3 font-medium">Kết thúc</th>
+                            <th class="py-2 font-medium">Tổng vắng mặt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cheat-log-body" class="text-slate-700 dark:text-slate-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-curriculum" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-curriculum-title">Thêm Giáo Trình Mới</h3>
+                    <button type="button" onclick="closeModal('modal-curriculum')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form id="form-curriculum" onsubmit="handleSaveCurriculum(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Môn học <span class="text-red-500">*</span></label>
+                        <select id="input-curriculum-subject" required class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"></select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tiêu đề <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-curriculum-title" required placeholder="Ví dụ: Giáo trình chương 1 - Nhập môn" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mô tả (không bắt buộc)</label>
+                        <textarea id="input-curriculum-desc" rows="2" placeholder="Ghi chú ngắn về tài liệu này..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"></textarea>
+                    </div>
+
+                    <div id="curriculum-link-fields" class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Đường dẫn tài liệu <span class="text-red-500">*</span></label>
+                        <input type="url" id="input-curriculum-link" required placeholder="Link Google Drive hoặc trang web bất kỳ (https://...)" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <p class="text-xs text-slate-400 mt-1">Sinh viên bấm vào tài liệu sẽ được chuyển tới đường dẫn này ở tab mới.</p>
+                        <p id="curriculum-existing-file-note" class="hidden text-xs text-amber-600 dark:text-amber-400 mt-1">Đây là tài liệu dạng tệp đã tải lên từ trước, chỉ có thể sửa tiêu đề và mô tả.</p>
+                    </div>
+
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-curriculum')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                        <button type="submit" id="btn-curriculum-submit" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu giáo trình</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-homework" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-lg transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-hw-title">Thêm Bài Tập Mới</h3>
+                    <button type="button" onclick="closeModal('modal-homework')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form id="form-homework" onsubmit="handleSaveHomework(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Môn học <span class="text-red-500">*</span></label>
+                        <select id="input-hw-subject" required class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                            
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tiêu đề bài tập (Không bắt buộc)</label>
+                        <input type="text" id="input-hw-title" placeholder="Ví dụ: Làm bài tập chương 2" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Ghi chú thêm (Không bắt buộc)</label>
+                        <textarea id="input-hw-desc" rows="3" placeholder="Trang 45, làm từ bài 1 đến bài 5..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow resize-none"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Link tài liệu (Drive/Web) - Không bắt buộc</label>
+                        <input type="url" id="input-hw-link" placeholder="https://drive.google.com/..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nội dung dạng text (Không bắt buộc)</label>
+                        <textarea id="input-hw-textcontent" rows="5" placeholder="Dán link Drive, đoạn code, hoặc bất kỳ nội dung dạng chữ nào vào đây..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow resize-y"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Tệp đính kèm: docx, html, css, js, pdf... (Không bắt buộc)</label>
+                            <label for="input-hw-file-picker" class="cursor-pointer text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Chọn tệp
+                            </label>
+                            <input type="file" id="input-hw-file-picker" multiple onchange="handleFilesSelected(event)" class="hidden">
+                        </div>
+                        <div id="hw-files-container" class="space-y-2"></div>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-homework')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu bài tập</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-view-code" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="relative w-full max-w-3xl h-[85vh] flex flex-col">
+            <button type="button" onclick="closeModal('modal-view-code')" class="absolute -top-3 -right-3 z-30 bg-white text-slate-700 hover:text-slate-900 w-8 h-8 rounded-full shadow-md flex items-center justify-center transition-colors" title="Đóng">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex-1 min-h-0 overflow-y-auto" id="view-code-content"></div>
+        </div>
+    </div>
+
+    <div id="modal-submit" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-lg transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Nộp bài tập</h3>
+                    <button type="button" onclick="closeModal('modal-submit')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div id="submit-form-view">
+                    <div id="submit-hw-info" class="mb-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700 px-4 py-3"></div>
+                    <div id="submit-offline-note" class="hidden mb-4 text-sm rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 px-4 py-3">
+                        <i class="fa-solid fa-wifi mr-1"></i> Bạn đang <b>offline</b>. Bài sẽ được lưu trên thiết bị dưới dạng XML và tự động nộp khi có mạng.
+                    </div>
+                    <form id="form-submit" onsubmit="handleSubmitHomework(event)">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tệp bài làm <span class="text-red-500">*</span></label>
+                            <input type="file" id="input-submit-file" required class="w-full text-sm text-slate-700 dark:text-slate-300 file:mr-3 file:px-4 file:py-2 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 dark:file:bg-indigo-900/30 dark:file:text-indigo-300 hover:file:bg-indigo-100 px-2 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900">
+                            <p class="text-xs text-slate-400 mt-1">Mọi định dạng (docx, pdf, html, zip...), tối đa 10MB.</p>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Ghi chú gửi giảng viên (Không bắt buộc)</label>
+                            <textarea id="input-submit-note" rows="3" maxlength="2000" placeholder="Ví dụ: Em nộp bài tập chương 2, câu 5 em làm chưa xong..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow resize-none"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" onclick="closeModal('modal-submit')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                            <button type="submit" id="btn-submit-send" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2"><i class="fa-solid fa-paper-plane"></i> Nộp bài</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="submit-result-view" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[60] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-sm border border-slate-100 dark:border-slate-700">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-amber-100 dark:bg-amber-900/30 text-amber-500 p-2 rounded-full">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Xác nhận</h3>
+                </div>
+                <p id="confirm-message" class="text-sm text-slate-600 dark:text-slate-300 mb-6"></p>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeConfirmDialog(false)" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                    <button type="button" onclick="closeConfirmDialog(true)" class="px-4 py-2 rounded-xl text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-24 opacity-0 transition-all duration-300 z-[200] bg-slate-800 dark:bg-slate-700 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3">
+        <i class="fa-solid fa-circle-info text-blue-400"></i>
+        <span id="toast-message" class="text-sm font-medium">Thông báo</span>
+    </div>
+
+    <!-- Modal: GV tạo bài kiểm tra mới -->
+    <div id="modal-quiz" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-6 pb-4 flex-shrink-0">
+                <div class="flex justify-between items-center mb-1">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tạo Bài Kiểm Tra Mới</h3>
+                    <button type="button" onclick="closeModal('modal-quiz')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Bài kiểm tra sẽ mở ngay cho sinh viên làm sau khi tạo.</p>
+            </div>
+            <form id="form-quiz" onsubmit="handleCreateQuizSubmit(event)" class="flex-1 min-h-0 flex flex-col">
+                <div class="px-6 flex-1 min-h-0 overflow-y-auto space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Môn học <span class="text-red-500">*</span></label>
+                        <select id="input-quiz-subject" required class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"></select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tiêu đề bài kiểm tra <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-quiz-title" required placeholder="Ví dụ: Kiểm tra giữa kỳ - Chương 1-3" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mô tả (không bắt buộc)</label>
+                        <textarea id="input-quiz-desc" rows="2" placeholder="Ghi chú thêm về bài kiểm tra..." class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Thời gian làm bài (phút) <span class="text-red-500">*</span></label>
+                        <input type="number" id="input-quiz-thoigian" min="1" value="45" required class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Thời gian hiển thị ô xem lại kết quả sau khi nộp bài (giây)</label>
+                        <input type="number" id="input-quiz-thoigianketqua" min="0" value="5" required class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <p class="text-[11px] text-slate-400 mt-1">Để 0 = hiển thị vô hạn, ô chỉ tắt khi học sinh tự bấm đóng.</p>
+                    </div>
+                    <label class="flex items-start gap-3 text-sm cursor-pointer select-none">
+                        <input type="checkbox" id="input-quiz-chonggianlan" checked class="mt-1 w-5 h-5 accent-indigo-600">
+                        <span>
+                            <span class="block font-medium text-slate-700 dark:text-slate-200"><i class="fa-solid fa-shield-halved mr-1 text-indigo-500"></i>Bật chống gian lận</span>
+                            <span class="block text-xs text-slate-400 mt-0.5"><b>Bật</b>: cảnh báo, ghi nhận và tự nộp bài khi rời trang, mở DevTools, copy/dán...<br><b>Tắt</b>: cho phép gian lận - sinh viên làm bài bình thường, không có bất kỳ thông báo nào.</span>
+                        </span>
+                    </label>
+
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center justify-between mb-2 mt-3">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Danh sách câu hỏi</label>
+                            <div class="flex items-center gap-4">
+                                <a href="mau_cau_hoi.xlsx" download class="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 underline" title="Tải file Excel mẫu để điền câu hỏi">Tải file mẫu</a>
+                                <button type="button" onclick="document.getElementById('input-quiz-excel').click()" class="text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1" title="Cột A: câu hỏi; cột B-E: đáp án A-D; đáp án đúng in đậm">
+                                    <i class="fa-solid fa-file-excel"></i> Nạp từ Excel
+                                </button>
+                                <button type="button" onclick="addQuizQuestionRow()" class="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1">
+                                    <i class="fa-solid fa-plus"></i> Thêm câu hỏi
+                                </button>
+                            </div>
+                            <input type="file" id="input-quiz-excel" accept=".xlsx" class="hidden" onchange="handleImportQuizExcel('create', this)">
+                        </div>
+                        <div id="excel-import-report" class="hidden mb-3"></div>
+                        <div id="quiz-questions-builder" class="space-y-3"></div>
+                        <div class="flex items-center justify-between mt-3 px-1">
+                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Tổng điểm: <span id="quiz-total-diem">0</span> / 10</span>
+                            <span class="text-[11px] text-slate-400">Điểm mỗi câu tự động chia đều, không cần nhập tay.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 p-6 pt-4 flex-shrink-0 border-t border-slate-100 dark:border-slate-700">
+                    <button type="button" onclick="closeModal('modal-quiz')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                    <button type="submit" id="btn-quiz-save" class="px-4 py-2 rounded-xl text-sm font-medium text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Tạo bài kiểm tra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: GV sửa câu hỏi/đáp án của bài kiểm tra (không đụng tới bài làm của sinh viên) -->
+    <div id="modal-quiz-edit" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-5xl max-h-[94vh] flex flex-col transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-8 pb-5 flex-shrink-0 border-b border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Sửa bài kiểm tra</h3>
+                    <button type="button" onclick="closeModal('modal-quiz-edit')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-3xl"></i>
+                    </button>
+                </div>
+                <p class="text-base text-slate-500 dark:text-slate-400 mt-2"><i class="fa-solid fa-circle-info mr-1"></i>Bạn có thể sửa câu hỏi, đáp án và thêm câu hỏi mới cho đề. Câu trả lời sinh viên đã làm được giữ nguyên; tổng điểm vẫn là 10 (chia đều cho các câu) và điểm các bài đã nộp sẽ được tính lại.</p>
+            </div>
+            <form id="form-quiz-edit" onsubmit="handleEditQuizSubmit(event)" class="flex flex-col flex-1 min-h-0">
+                <div class="px-8 py-6 flex-1 min-h-0 overflow-y-auto space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-base font-medium text-slate-700 dark:text-slate-200 mb-1">Tiêu đề</label>
+                            <input id="edit-quiz-title" type="text" class="w-full px-4 py-3 text-lg rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-base font-medium text-slate-700 dark:text-slate-200 mb-1">Mô tả</label>
+                            <input id="edit-quiz-desc" type="text" class="w-full px-4 py-3 text-lg rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-base font-medium text-slate-700 dark:text-slate-200 mb-1">Thời gian làm bài (phút)</label>
+                            <input id="edit-quiz-thoigian" type="number" min="1" class="w-full px-4 py-3 text-lg rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-base font-medium text-slate-700 dark:text-slate-200 mb-1">Số giây hiện kết quả sau khi nộp (0 = vô hạn)</label>
+                            <input id="edit-quiz-thoigianketqua" type="number" min="0" class="w-full px-4 py-3 text-lg rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+
+                    <label class="flex items-start gap-3 text-base cursor-pointer select-none">
+                        <input type="checkbox" id="edit-quiz-chonggianlan" checked class="mt-1 w-5 h-5 accent-indigo-600">
+                        <span>
+                            <span class="block font-medium text-slate-700 dark:text-slate-200"><i class="fa-solid fa-shield-halved mr-1 text-indigo-500"></i>Bật chống gian lận</span>
+                            <span class="block text-xs text-slate-400 mt-0.5"><b>Bật</b>: cảnh báo, ghi nhận và tự nộp bài khi rời trang, mở DevTools, copy/dán...<br><b>Tắt</b>: cho phép gian lận - sinh viên làm bài bình thường, không có bất kỳ thông báo nào.</span>
+                        </span>
+                    </label>
+                    <div id="edit-excel-import-report" class="hidden"></div>
+                    <div id="edit-quiz-questions" class="space-y-5"></div>
+                    <div class="flex flex-wrap gap-3">
+                        <button type="button" onclick="addQuizEditQuestion('trac_nghiem')" class="px-5 py-3 rounded-xl text-base font-medium text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                            <i class="fa-solid fa-plus mr-1"></i> Thêm câu trắc nghiệm
+                        </button>
+                        <button type="button" onclick="addQuizEditQuestion('tu_luan')" class="px-5 py-3 rounded-xl text-base font-medium text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                            <i class="fa-solid fa-plus mr-1"></i> Thêm câu tự luận
+                        </button>
+                        <button type="button" onclick="document.getElementById('input-quiz-edit-excel').click()" class="px-5 py-3 rounded-xl text-base font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors" title="Cột A: câu hỏi; cột B-E: đáp án A-D; đáp án đúng in đậm">
+                            <i class="fa-solid fa-file-excel mr-1"></i> Nạp câu trắc nghiệm từ Excel
+                        </button>
+                        <a href="mau_cau_hoi.xlsx" download class="px-2 py-3 text-base text-slate-500 dark:text-slate-400 hover:text-indigo-600 underline">Tải file mẫu</a>
+                        <input type="file" id="input-quiz-edit-excel" accept=".xlsx" class="hidden" onchange="handleImportQuizExcel('edit', this)">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 p-8 pt-5 flex-shrink-0 border-t border-slate-100 dark:border-slate-700">
+                    <button type="button" onclick="closeModal('modal-quiz-edit')" class="px-8 py-3.5 rounded-xl text-lg font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Hủy</button>
+                    <button type="submit" id="btn-quiz-edit-save" class="px-10 py-3.5 rounded-xl text-lg font-semibold text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: SV làm bài kiểm tra -->
+    <div id="modal-quiz-taking" class="fixed inset-0 bg-slate-900 dark:bg-slate-900 modal-overlay hidden z-50 flex items-stretch justify-stretch p-0">
+        <div id="quiz-container" class="hsr-panel bg-white dark:bg-slate-800 rounded-none shadow-none w-full h-full max-w-none max-h-none flex flex-col transform transition-all border-0">
+            <div class="p-8 pb-5 flex-shrink-0 border-b border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center">
+                    <h3 id="quiz-taking-title" class="text-2xl font-bold text-slate-900 dark:text-white">Bài kiểm tra</h3>
+                    <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-mono font-bold text-3xl bg-red-50 dark:bg-red-900/30 px-5 py-2 rounded-xl">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="quiz-timer-display">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-1 min-h-0">
+                <!-- Ô đỏ: chỉ hiện 1 câu hỏi tại 1 thời điểm -->
+                <div id="quiz-questions-container" class="px-8 py-6 flex-1 min-w-0 overflow-y-auto"></div>
+                <!-- Ô xanh: bảng số câu hỏi + nút xóa câu trả lời -->
+                <aside id="quiz-navigator-panel" class="w-80 flex-shrink-0 p-6 border-l border-slate-100 dark:border-slate-700 overflow-y-auto flex flex-col gap-5">
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Danh sách câu hỏi</h4>
+                        <p id="quiz-nav-count" class="text-sm text-slate-500 dark:text-slate-400 mt-1">Đã trả lời 0/0</p>
+                    </div>
+                    <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+                    <div class="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <span class="flex items-center gap-2"><span class="quiz-nav-legend" style="background:#fff;border:1px solid #94a3b8"></span> Chưa trả lời</span>
+                        <span class="flex items-center gap-2"><span class="quiz-nav-legend" style="background:#22c55e;border:1px solid #16a34a"></span> Đã trả lời</span>
+                    </div>
+                    <button type="button" id="quiz-clear-answer-btn" onclick="clearCurrentQuizAnswer()" class="mt-auto px-4 py-3 rounded-xl text-base font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                        <i class="fa-regular fa-trash-can mr-1"></i> Xóa câu trả lời
+                    </button>
+                </aside>
+            </div>
+            <div class="flex justify-end gap-3 p-8 pt-5 flex-shrink-0 border-t border-slate-100 dark:border-slate-700">
+                <button type="button" id="quiz-submit-btn" onclick="handleManualSubmitQuiz()" class="px-10 py-3.5 rounded-xl text-lg font-semibold text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Nộp bài</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: ô xem lại kết quả cho sinh viên, hiện ngay sau khi nộp bài -->
+    <div id="modal-quiz-review" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[65] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[92vh] flex flex-col transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-8 pb-5 flex-shrink-0 border-b border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-1">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Kết quả bài làm</h3>
+                    <button type="button" onclick="closeQuizReviewModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-3xl"></i>
+                    </button>
+                </div>
+                <p id="quiz-review-score" class="text-xl font-semibold text-indigo-600 dark:text-indigo-400"></p>
+            </div>
+            <div id="quiz-review-content" class="px-8 py-6 flex-1 min-h-0 overflow-y-auto space-y-5"></div>
+            <div class="flex items-center justify-between gap-3 p-8 pt-5 flex-shrink-0 border-t border-slate-100 dark:border-slate-700">
+                <span id="quiz-review-countdown" class="text-base text-slate-400 dark:text-slate-500"></span>
+                <button type="button" onclick="closeQuizReviewModal()" class="px-10 py-3.5 rounded-xl text-lg font-semibold text-white hsr-btn bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: GV xem kết quả bài kiểm tra -->
+    <div id="modal-quiz-results" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-5xl max-h-[92vh] flex flex-col transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-8 pb-5 flex-shrink-0">
+                <div class="flex justify-between items-center">
+                    <h3 id="quiz-results-title" class="text-2xl font-bold text-slate-900 dark:text-white">Kết quả bài kiểm tra</h3>
+                    <div class="flex items-center gap-4">
+                        <button type="button" id="btn-export-excel" onclick="exportQuizResultsExcel()" class="hsr-btn bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-base font-semibold transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap">
+                            <i class="fa-solid fa-file-excel"></i> Xuất Excel
+                        </button>
+                    <button type="button" onclick="closeModal('modal-quiz-results')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-3xl"></i>
+                    </button>
+                    </div>
+                </div>
+            </div>
+            <div id="quiz-results-content" class="px-8 pb-8 flex-1 min-h-0 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Modal: GV xem chi tiết từng câu trả lời của 1 sinh viên -->
+    <div id="modal-quiz-detail" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 modal-overlay hidden z-[55] flex items-center justify-center p-4">
+        <div class="hsr-panel bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-5xl max-h-[92vh] flex flex-col transform transition-all border border-slate-100 dark:border-slate-700">
+            <div class="p-8 pb-5 flex-shrink-0 border-b border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-1">
+                    <h3 id="quiz-detail-title" class="text-2xl font-bold text-slate-900 dark:text-white">Chi tiết bài làm</h3>
+                    <button type="button" onclick="closeModal('modal-quiz-detail')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <i class="fa-solid fa-xmark text-3xl"></i>
+                    </button>
+                </div>
+                <p id="quiz-detail-score" class="text-xl font-semibold text-indigo-600 dark:text-indigo-400"></p>
+            </div>
+            <div id="quiz-detail-content" class="px-8 py-6 flex-1 min-h-0 overflow-y-auto space-y-5"></div>
+        </div>
+    </div>
+
+    <div id="quiz-devtools-warning-overlay">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h2 class="text-xl font-bold mb-2">Đã phát hiện công cụ dành cho nhà phát triển (Inspect/F12)</h2>
+        <p class="text-sm text-slate-300 max-w-md">Vì lý do bảo mật bài kiểm tra, bài làm của bạn đã được tự động nộp và bạn sẽ không thể tiếp tục làm bài này.</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="excel_import.js?v=20261016-2"></script>
+    <script src="script.js?v=20261016-2"></script>
+    <script src="nop_bai.js?v=20261015-1"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  bai_nop.xsd: cấu trúc hợp lệ của 1 file XML BÀI NỘP (bài tập sinh viên nộp cho giảng viên).
+  Trình duyệt của sinh viên tự đóng gói bài nộp theo cấu trúc này. Khi KHÔNG có mạng, file XML
+  được giữ trên thiết bị (IndexedDB); khi có mạng lại, nó được gửi lên api/submissions.php.
+  Server kiểm tra XSD này, rồi dùng XPath để đọc từng trường và lưu cho giảng viên xem.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:simpleType name="MaBaiNop">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Za-z0-9_\-]{8,64}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="BaiNop">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SinhVien">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TenDangNhap" type="xs:string"/>
+              <xs:element name="HoTen" type="xs:string"/>
+              <xs:element name="MaSoSV" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="MonHoc">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="BaiTap">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="GhiChu" type="xs:string"/>
+
+        <!-- Thời điểm sinh viên bấm nộp (giờ trên thiết bị, có múi giờ) -->
+        <xs:element name="ThoiGianNop" type="xs:dateTime"/>
+
+        <!-- Tệp bài làm, nội dung mã hóa base64; kichThuoc = số byte của tệp gốc -->
+        <xs:element name="Tep">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="ten" type="xs:string" use="required"/>
+                <xs:attribute name="loai" type="xs:string" use="required"/>
+                <xs:attribute name="kichThuoc" type="xs:nonNegativeInteger" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <!-- clientId do trình duyệt sinh ra: nộp lại cùng 1 bài (do mạng chập chờn) không bị trùng -->
+      <xs:attribute name="clientId" type="MaBaiNop" use="required"/>
+      <xs:attribute name="cheDo" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="online"/>
+            <xs:enumeration value="offline"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

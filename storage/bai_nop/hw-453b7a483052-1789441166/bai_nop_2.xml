@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BaiNopDaLuu id="2" clientId="4d751958-0891-4d4b-9ae5-0b44a7071c0b" cheDo="online">
+  <SinhVien>
+    <TenDangNhap>sv1</TenDangNhap>
+    <HoTen>Nguyễn Văn An</HoTen>
+    <MaSoSV>2200001</MaSoSV>
+  </SinhVien>
+  <MonHoc id="sub-27728b9dd4ff-1789441151">WEB</MonHoc>
+  <BaiTap id="hw-453b7a483052-1789441166"/>
+  <GhiChu></GhiChu>
+  <ThoiGianNop>2026-10-16 09:26:27</ThoiGianNop>
+  <ThoiGianNhan>2026-10-16 09:26:27</ThoiGianNhan>
+  <Tep ten="python.xlsx" loai="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" kichThuoc="6338"/>
+</BaiNopDaLuu>

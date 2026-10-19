@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- tai_khoan.xsd: cấu trúc file storage/tai_khoan.xml (danh sách tài khoản gv/sv). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+  <xs:element name="DanhSachTaiKhoan">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaiKhoan" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TenDangNhap" type="xs:string"/>
+              <xs:element name="MatKhau" type="xs:string"/>
+              <xs:element name="HoTen" type="xs:string" minOccurs="0"/>
+              <xs:element name="MaSoSV" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="vaiTro" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="gv"/>
+                  <xs:enumeration value="sv"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  thong_ke.xsd: cấu trúc XML thống kê 1 bài kiểm tra do api/thong_ke.php trả về.
+  Số liệu được tính bằng XPath trên các file XML bài làm trong storage/bai_lam.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:element name="ThongKe">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TieuDe" type="xs:string"/>
+        <xs:element name="TongDiem" type="xs:decimal"/>
+        <xs:element name="SoBaiNop" type="xs:nonNegativeInteger"/>
+        <xs:element name="DiemTrungBinh" type="xs:decimal"/>
+        <xs:element name="DiemCaoNhat" type="xs:decimal"/>
+        <xs:element name="DiemThapNhat" type="xs:decimal"/>
+        <xs:element name="SoBaiDat" type="xs:nonNegativeInteger"/>
+        <xs:element name="TyLeDat">
+          <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+              <xs:minInclusive value="0"/>
+              <xs:maxInclusive value="100"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="ThoiGianTrungBinhGiay" type="xs:nonNegativeInteger"/>
+        <xs:element name="TongSoViPham" type="xs:nonNegativeInteger"/>
+
+        <xs:element name="PhanBoDiem">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PhanKhoang" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="tu" type="xs:decimal" use="required"/>
+                  <xs:attribute name="den" type="xs:decimal" use="required"/>
+                  <xs:attribute name="soLuong" type="xs:nonNegativeInteger" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="CauHoiSaiNhieuNhat">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CauHoi" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="NoiDung" type="xs:string"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+                  <xs:attribute name="soLanSai" type="xs:nonNegativeInteger" use="required"/>
+                  <xs:attribute name="soLanLam" type="xs:nonNegativeInteger" use="required"/>
+                  <xs:attribute name="tyLeSai" type="xs:decimal" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="quizId" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

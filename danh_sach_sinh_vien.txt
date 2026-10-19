@@ -1,0 +1,39 @@
+DANH SÁCH 10 SINH VIÊN VÀ 5 LỚP HỌC
+Mật khẩu chung của cả 10 sinh viên: 123123
+Quy ước: mỗi sinh viên chỉ thuộc 1 lớp; mỗi lớp có 2 sinh viên.
+
+A. DANH SÁCH SINH VIÊN
+------------------------------------------------------------------------------
+STT  Mã sinh viên   Tên sinh viên           User    Lớp       Mật khẩu
+------------------------------------------------------------------------------
+1    2200003        Lê Hoàng Nam            sv3     22CNTT1   123123
+2    2200004        Phạm Thị Lan Anh        sv4     22CNTT1   123123
+3    2200005        Võ Quốc Bảo             sv5     22CNTT2   123123
+4    2200006        Đặng Thu Hà             sv6     22CNTT2   123123
+5    2200007        Bùi Minh Khoa           sv7     22CNTT3   123123
+6    2200008        Hoàng Ngọc Mai          sv8     22CNTT3   123123
+7    2200009        Huỳnh Gia Huy           sv9     22CNTT4   123123
+8    2200010        Ngô Thanh Thảo          sv10    22CNTT4   123123
+9    2200011        Dương Tuấn Kiệt         sv11    22CNTT5   123123
+10   2200012        Trịnh Bảo Ngọc          sv12    22CNTT5   123123
+------------------------------------------------------------------------------
+
+B. DANH SÁCH THEO LỚP
+------------------------------------------------------------------------------
+Lớp 22CNTT1 (2 sinh viên):
+    - Lê Hoàng Nam (2200003, user: sv3)
+    - Phạm Thị Lan Anh (2200004, user: sv4)
+Lớp 22CNTT2 (2 sinh viên):
+    - Võ Quốc Bảo (2200005, user: sv5)
+    - Đặng Thu Hà (2200006, user: sv6)
+Lớp 22CNTT3 (2 sinh viên):
+    - Bùi Minh Khoa (2200007, user: sv7)
+    - Hoàng Ngọc Mai (2200008, user: sv8)
+Lớp 22CNTT4 (2 sinh viên):
+    - Huỳnh Gia Huy (2200009, user: sv9)
+    - Ngô Thanh Thảo (2200010, user: sv10)
+Lớp 22CNTT5 (2 sinh viên):
+    - Dương Tuấn Kiệt (2200011, user: sv11)
+    - Trịnh Bảo Ngọc (2200012, user: sv12)
+
+Ghi chú: các tài khoản này được tạo bằng file sinh_vien_lop_hoc.sql (chạy trong phpMyAdmin).
